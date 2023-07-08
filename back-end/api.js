@@ -52,17 +52,17 @@ const produtos_banco_de_dados = [
 ];
 
 const db_fake = [
-  { id: 0, user: "vinicius", password: '12345' },
-  { id: 1, user: "rafael", password: '12345' },
-  { id: 2, user: "alison", password: '12345' },
-  { id: 3, user: "fernando", password: '12345' },
-  { id: 4, user: "danillo", password: '12345' },
-  { id: 5, user: "jonathan", password: '12345' },
-  { id: 6, user: "pedro", password: '12345' },
-  { id: 7, user: "yago", password: '12345' },
-  { id: 8, user: "eliz", password: '12345' },
-  { id: 9, user: "vinicius_leite", password: '12345' },
-  { id: 10, user: "maria", password: '12345' }
+  { id: 0, user: "vinicius", password: '12345', role:'admin' },
+  { id: 1, user: "rafael", password: '12345', role:'admin' },
+  { id: 2, user: "alison", password: '12345', role:'admin' },
+  { id: 3, user: "fernando", password: '12345' , role:'admin'},
+  { id: 4, user: "danillo", password: '12345' , role:'admin'},
+  { id: 5, user: "jonathan", password: '12345', role:'admin' },
+  { id: 6, user: "pedro", password: '12345', role:'admin' },
+  { id: 7, user: "yago", password: '12345', role:'admin' },
+  { id: 8, user: "eliz", password: '12345', role:'admin' },
+  { id: 9, user: "vinicius_leite", password: '12345' , role:'admin'},
+  { id: 10, user: "maria", password: '12345', role:'admin' }
 
 ];
 
@@ -108,7 +108,7 @@ app.post("/login", (req, res) => {
   );
   if (isUser) {
     const token = jwt.sign({ user }, secretKey);
-    res.status(200).jsonp({ login: true, token:token });
+    res.status(200).jsonp({ login: true, token:token, role:'admin' });
   } else {
     res.status(404).jsonp({ login: false });
   }
@@ -131,7 +131,7 @@ function verifyToken(req, res, next) {
     next();
   });
 }
-app.post("/produtos",(req, res) => {
+app.post("/produtos",verifyToken,(req, res) => {
   var newItem = req.body;
   if(typeof newItem.id ==='number' && typeof newItem.user ==='string' &&  typeof newItem.img ==='string' && typeof newItem.valor ==='number' && typeof newItem.estoque ==='number'){
     newItem.id=id;

@@ -1,11 +1,21 @@
 import "../css/login.css";
 import Dashboard from "./Dashboard";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 function Login() {
   const [isLogin, setIsLogin] = useState(false);
   const url_api ="https://unified-booster-392006.uc.r.appspot.com"
   // const url_api = "http://localhost:8080";
 
+  function estalogado(){
+    const login  = localStorage.getItem('login')
+    if(login){
+      console.log(login)
+      setIsLogin(login)
+    }else{
+      console.log('Você esta sem token')
+    }
+  
+  }
 
   async function getLogin(data,prefix) {
     const response = await fetch(`${url_api}${prefix}`, {
@@ -34,10 +44,16 @@ function Login() {
 
     getLogin(json,'/login').then((data) => {
       console.log("Resposta do Back-End: ", data);
+      localStorage.setItem('login',data.login)
+      localStorage.setItem('token',data.token)
+
       setIsLogin(data.login);
     });
   }
-
+  
+  useEffect(() => {
+    estalogado();
+  }, []);
   return isLogin ? (
     <Dashboard />
   ) : (

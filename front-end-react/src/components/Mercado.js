@@ -8,6 +8,7 @@ async function postGenericJson(data, prefix) {
   const response = await fetch(`${url_api}/${prefix}`, {
     headers: {
       "Content-Type": "application/json",
+      "authorization":localStorage.getItem('token')
     }, method: 'post', body: JSON.stringify(data)
   })
   return await response.json()
@@ -216,16 +217,27 @@ export default function Mercado() {
           ))}
         </div>
         <form>
-          <label/> id  
-          <input name='id'/> 
-          <label/> nome  
-          <input name='nome'/> 
-          <label/> imagem  
-          <input name='imagem'/> 
-          <label/> valor   
-          <input name='valor'/> 
-          <label/> quantidade   
-          <input name='quantidade'/> 
+          <label>
+            id
+            <input name='id' />
+          </label>
+
+          <label>nome
+            <input name='nome' />
+          </label>
+
+          <label>
+            imagem
+            <input name='imagem' />
+          </label>
+          <label>
+            valor
+            <input name='valor' />
+          </label>
+          <label>
+            quantidade
+            <input name='quantidade' />
+          </label>
         </form>
         <button onClick={removeTudoDoCarrinho}>Limpar</button>
         <button>Finalizar Conta</button>
