@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import "../css/style.css";
-// const url_api ="https://unified-booster-392006.uc.r.appspot.com/login"
-const url_api ="http://localhost:8080"
+const url_api ="https://unified-booster-392006.uc.r.appspot.com/"
+//const url_api ="http://localhost:8080"
 
 
 async function postGenericJson(data,prefix) {
   const response = await fetch(`${url_api}/${prefix}`, {
     headers: {
       "Content-Type": "application/json",
-    }, method: 'post', body: JSON.stringify(data)
+      "authorization":localStorage.getItem('token')
+    }, method: 'post', body:(data)
   })
   return await response.json()
 }
@@ -109,16 +110,18 @@ export default function Mercado() {
   }
   
 
-  function addProdutoNovo(){
-      const data={
-        id: 8,
-        nome: "Banana",
-        img: "https://mercadoorganico.com/6398-large_default/banana-prata-organica-600g-osm.jpg",
-        valor: 3.15,
-        estoque: 1023,
-      }
-    postGenericJson(data,"produtos").then(data=>{console.log('Return:',data);produtos.push(data);setProdutos([...produtos])})
-  }
+  //function addProdutoNovo(){
+    //const data={
+    //id: 8,
+    //nome: "Banana",
+    //img: "https://mercadoorganico.com/6398-large_default/banana-prata-organica-600g-osm.jpg",
+    //valor: 3.15,
+    // estoque: 1023,
+    // }
+      
+      
+  
+    //}
 
   useEffect(() => {
     getProdutos().then((data) => {
@@ -132,6 +135,23 @@ export default function Mercado() {
     }).format(valor);
   }
   
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    console.log("form", form);
+    const formData = new FormData(form);
+    console.log("formData", formData);
+
+    var object = {};
+    formData.forEach(function (value, key) {
+      object[key] = value;
+    });
+    object.valor = Number (object.valor)
+    var json = JSON.stringify(object);
+    console.log("json", json);
+
+    postGenericJson(json,"produtos").then(data=>{console.log('Return:',data);produtos.push(data);setProdutos([...produtos])})
+  }
   return (
     <>
       <div className="produtos">
@@ -215,9 +235,27 @@ export default function Mercado() {
             </div>
           ))}
         </div>
+        <form method="post" onSubmit={handleSubmit}>
+          <div className="adicionar">
+          <label/> id
+          <input type="text" name="id"/>
+          <label/> nome
+          <input type="text" name="nome"/>
+          <label/>imagem
+          <input type="text" name="img"/>
+          <label/> valor
+          <input type="number" name="valor"/>
+          <label/> estoque
+          <input type="number" name="estoque"/>
+          <label/>
+          
+          <button type="submit">Adicionar</button>
+          </div>
+        </form>
+  
         <button onClick={removeTudoDoCarrinho}>Limpar</button>
         <button>Finalizar Conta</button>
-        <button onClick={addProdutoNovo} >ADD Produto Novo</button>
+       
 
       </div>
     </>

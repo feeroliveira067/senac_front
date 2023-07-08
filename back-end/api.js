@@ -57,7 +57,7 @@ const db_fake = [
   { id: 2, user: "alison", password: '12345' },
   { id: 3, user: "fernando", password: '12345' },
   { id: 4, user: "Danillo", password: '12345' },
-  { id: 5, user: "Jonathan", password: '12345' },
+  { id: 5, user: "Jonathan", password: '12345', role:'admin'},
   { id: 6, user: "Pedro", password: '12345' },
   { id: 7, user: "Yago", password: '12345' },
   { id: 8, user: "Eliz", password: '12345' },
@@ -113,7 +113,7 @@ app.post("/login", (req, res) => {
   );
   if (isUser) {
     const token = jwt.sign({ user }, secretKey);
-    res.status(200).jsonp({ login: true, token:token });
+    res.status(200).jsonp({ login: true, token:token, role:'admin' });
   } else {
     res.status(404).jsonp({ login: false });
   }
@@ -136,7 +136,7 @@ function verifyToken(req, res, next) {
     next();
   });
 }
-app.post("/produtos",(req, res) => {
+app.post("/produtos",verifyToken,(req, res) => {
   var newItem = req.body;
   newItem.id=id;
   insertItem(newItem);
