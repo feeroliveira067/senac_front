@@ -146,7 +146,7 @@ export default function Mercado() {
     formData.forEach(function (value, key) {
       object[key] = value;
     });
-    object.valor = Number (object.valor)
+    object.valor = Number (object)
     var json = JSON.stringify(object);
     console.log("json", json);
 
