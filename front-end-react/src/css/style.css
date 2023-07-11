@@ -110,4 +110,13 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    text-align: center;
 }
+
+.remover{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+}
+

@@ -110,18 +110,19 @@ export default function Mercado() {
   }
   
 
-  //function addProdutoNovo(){
-    //const data={
-    //id: 8,
-    //nome: "Banana",
-    //img: "https://mercadoorganico.com/6398-large_default/banana-prata-organica-600g-osm.jpg",
-    //valor: 3.15,
-    // estoque: 1023,
-    // }
+  // // function addProdutoNovo(){
+  // //   const data={
+  // //   id: 8,
+  // //   nome: "Banana",
+  // //   img: "https://mercadoorganico.com/6398-large_default/banana-prata-organica-600g-osm.jpg",
+  // //   valor: 3.15,
+  // //   estoque: 1023,
+  // //   }
       
       
   
-    //}
+  //   }
+    
 
   useEffect(() => {
     getProdutos().then((data) => {
@@ -147,11 +148,19 @@ export default function Mercado() {
       object[key] = value;
     });
     object.valor = Number (object)
+    console.log(object)
     var json = JSON.stringify(object);
     console.log("json", json);
 
     postGenericJson(json,"produtos").then(data=>{console.log('Return:',data);produtos.push(data);setProdutos([...produtos])})
   }
+  
+// function handleDelete(){
+//   Deletar().then
+
+
+}
+    
   return (
     <>
       <div className="produtos">
@@ -173,7 +182,13 @@ export default function Mercado() {
               <div className="cartao_botao">
                 <button onClick={() => adicionarProdutoAoCarrinho(produto)}>
                   comprar
+                <form method="delete">
                 </button>
+                <button onClick={()=> handleDelete(produto)}>
+                  deletar
+                </button>
+
+                <form/>
               </div>
             </div>
           </div>
@@ -253,6 +268,7 @@ export default function Mercado() {
           </div>
         </form>
   
+
         <button onClick={removeTudoDoCarrinho}>Limpar</button>
         <button>Finalizar Conta</button>
        
